@@ -1,0 +1,48 @@
+# Absher Neuron 2.0 — Author: Abdulaziz AlAmawi
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+ml/artifacts/*.joblib
+ml/artifacts/metrics.json
+
+# Env & secrets
+.env
+.env.local
+.env.*.local
+*.pem
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Prisma
+database/node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build outputs
+frontend/.next/
+backend/dist/
+ai-engine/ml/artifacts/

@@ -1,0 +1,69 @@
+# Absher Neuron 2.0 — Full-stack orchestration
+# Author: Abdulaziz AlAmawi
+# AI Security Intelligence Platform
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: neuron-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: neuron
+      POSTGRES_PASSWORD: neuron_secret
+      POSTGRES_DB: absher_neuron
+    ports:
+      - "5432:5432"
+    volumes:
+      - neuron_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U neuron -d absher_neuron"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  ai-engine:
+    build: ./ai-engine
+    container_name: neuron-ai
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  api-gateway:
+    build: ./backend
+    container_name: neuron-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://neuron:neuron_secret@db:5432/absher_neuron?schema=public
+      PORT: "4000"
+    ports:
+      - "4000:4000"
+
+  frontend:
+    build: ./frontend
+    container_name: neuron-web
+    restart: unless-stopped
+    depends_on:
+      ai-engine:
+        condition: service_started
+      db:
+        condition: service_healthy
+      api-gateway:
+        condition: service_started
+    environment:
+      NEXT_PUBLIC_AI_WS_URL: ws://localhost:8000/ws/stream
+      NEXT_PUBLIC_API_URL: http://localhost:4000
+      DATABASE_URL: postgresql://neuron:neuron_secret@db:5432/absher_neuron?schema=public
+      JWT_SECRET: absher-neuron-production-secret-abdulaziz-alamawi
+    ports:
+      - "3000:3000"
+
+volumes:
+  neuron_pgdata:

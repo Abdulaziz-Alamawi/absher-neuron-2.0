@@ -1,0 +1,13 @@
+# Absher Neuron 2.0 — AI Engine dependencies
+# Author: Abdulaziz AlAmawi
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.5
+scikit-learn==1.6.1
+numpy==2.2.2
+pandas==2.2.3
+joblib==1.4.2
+python-multipart==0.0.20
+# Optional gradient boosting; the engine falls back to sklearn's
+# HistGradientBoostingClassifier if xgboost wheels are unavailable.
+xgboost==2.1.3

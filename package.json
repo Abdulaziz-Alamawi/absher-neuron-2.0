@@ -1,0 +1,29 @@
+{
+  "name": "absher-neuron",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Absher Neuron 2.0 — AI Security Intelligence Platform",
+  "author": "Abdulaziz AlAmawi",
+  "license": "MIT",
+  "scripts": {
+    "dev:web": "npm --prefix frontend run dev",
+    "build:web": "npm --prefix frontend run build",
+    "lint:web": "npm --prefix frontend run lint",
+    "ai:train": "python -m ml.train",
+    "ai:serve": "uvicorn app.main:app --reload",
+    "api:dev": "npm --prefix backend run dev",
+    "api:build": "npm --prefix backend run build",
+    "db:migrate": "npm --prefix database run migrate",
+    "db:seed": "npm --prefix database run seed",
+    "up": "docker compose up --build",
+    "down": "docker compose down"
+  },
+  "keywords": [
+    "ai-security",
+    "identity-intelligence",
+    "behavioral-analytics",
+    "threat-detection",
+    "zero-trust",
+    "adaptive-mfa"
+  ]
+}

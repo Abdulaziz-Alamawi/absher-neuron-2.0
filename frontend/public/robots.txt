@@ -1,0 +1,4 @@
+# Absher Neuron 2.0 — Author: Abdulaziz AlAmawi
+# Government security console — not for public indexing.
+User-agent: *
+Disallow: /

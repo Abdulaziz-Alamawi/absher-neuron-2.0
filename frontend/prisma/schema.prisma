@@ -1,0 +1,262 @@
+// Absher Neuron 2.0 — Data model
+// Author: Abdulaziz AlAmawi
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ANALYST
+  RESPONDER
+  ADMIN
+  AUDITOR
+  SUPERADMIN
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFO
+}
+
+enum AuthDecision {
+  ALLOW
+  STEP_UP
+  CHALLENGE
+  BLOCK
+}
+
+enum IncidentStatus {
+  OPEN
+  INVESTIGATING
+  CONTAINED
+  RESOLVED
+  CLOSED
+}
+
+enum VerificationMethod {
+  OTP
+  FACE
+  LIVE_CAMERA
+  VOICE
+  PHONE_CALL
+}
+
+enum VerificationStatus {
+  PASSED
+  FAILED
+  PENDING
+  SKIPPED
+}
+
+model Identity {
+  id              String   @id @default(cuid())
+  nationalIdHash  String   @unique
+  name            String
+  email           String   @unique
+  role            Role     @default(ANALYST)
+  department      String?
+  trustScore      Int      @default(80)
+  riskScore       Int      @default(10)
+  status          String   @default("active")
+  mfaEnabled      Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  lastLoginAt     DateTime?
+
+  profile         BehavioralProfile?
+  devices         Device[]
+  sessions        Session[]
+  threats         ThreatEvent[]
+  alerts          SecurityAlert[]
+  verifications   Verification[]
+
+  @@index([riskScore])
+  @@index([status])
+}
+
+model BehavioralProfile {
+  id                    String   @id @default(cuid())
+  identity              Identity @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identityId            String   @unique
+  baselineTypingCpm     Float    @default(240)
+  baselineMouseVelocity Float    @default(420)
+  activeHours           Int[]
+  knownLocations        String[]
+  samples               Int      @default(0)
+  confidence            Int      @default(50)
+  updatedAt             DateTime @updatedAt
+}
+
+model Device {
+  id          String   @id @default(cuid())
+  identity    Identity @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identityId  String
+  fingerprint String
+  platform    String?
+  browser     String?
+  os          String?
+  canvasHash  String?
+  webglHash   String?
+  trusted     Boolean  @default(false)
+  firstSeen   DateTime @default(now())
+  lastSeen    DateTime @default(now())
+  sessions    Session[]
+
+  @@unique([identityId, fingerprint])
+  @@index([trusted])
+}
+
+model Session {
+  id          String       @id @default(cuid())
+  identity    Identity     @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identityId  String
+  device      Device?      @relation(fields: [deviceId], references: [id])
+  deviceId    String?
+  ip          String
+  asn         String?
+  country     String?
+  city        String?
+  vpnDetected Boolean      @default(false)
+  torDetected Boolean      @default(false)
+  riskScore   Int          @default(0)
+  trustScore  Int          @default(0)
+  decision    AuthDecision @default(ALLOW)
+  active      Boolean      @default(true)
+  startedAt   DateTime     @default(now())
+  endedAt     DateTime?
+  threats     ThreatEvent[]
+  verifications Verification[]
+
+  @@index([riskScore])
+  @@index([active])
+}
+
+model ThreatEvent {
+  id             String       @id @default(cuid())
+  identity       Identity?    @relation(fields: [identityId], references: [id])
+  identityId     String?
+  session        Session?     @relation(fields: [sessionId], references: [id])
+  sessionId      String?
+  category       String
+  severity       Severity
+  riskScore      Int
+  confidence     Int
+  decision       AuthDecision
+  mitreTechnique String?
+  sourceIp       String
+  country        String?
+  city           String?
+  description    String
+  status         String       @default("active")
+  detectedAt     DateTime     @default(now())
+  incident       Incident?    @relation(fields: [incidentId], references: [id])
+  incidentId     String?
+
+  @@index([severity])
+  @@index([category])
+  @@index([detectedAt])
+}
+
+model SecurityAlert {
+  id           String    @id @default(cuid())
+  identity     Identity? @relation(fields: [identityId], references: [id])
+  identityId   String?
+  title        String
+  category     String
+  severity     Severity
+  riskScore    Int
+  aiConfidence Int
+  explanation  String
+  recommended  String[]
+  status       String    @default("new")
+  createdAt    DateTime  @default(now())
+  resolvedAt   DateTime?
+
+  @@index([severity])
+  @@index([status])
+}
+
+model Incident {
+  id            String           @id @default(cuid())
+  title         String
+  category      String
+  severity      Severity
+  status        IncidentStatus   @default(OPEN)
+  riskScore     Int
+  affectedUsers Int              @default(0)
+  assignee      String?
+  summary       String
+  openedAt      DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  threats       ThreatEvent[]
+  timeline      IncidentEvent[]
+  actions       ResponseAction[]
+
+  @@index([status])
+}
+
+model IncidentEvent {
+  id         String   @id @default(cuid())
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  incidentId String
+  actor      String
+  action     String
+  detail     String
+  at         DateTime @default(now())
+}
+
+model ResponseAction {
+  id         String    @id @default(cuid())
+  incident   Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  incidentId String
+  label      String
+  type       String
+  automated  Boolean   @default(false)
+  executed   Boolean   @default(false)
+  executedAt DateTime?
+}
+
+model Verification {
+  id         String             @id @default(cuid())
+  identity   Identity           @relation(fields: [identityId], references: [id], onDelete: Cascade)
+  identityId String
+  session    Session?           @relation(fields: [sessionId], references: [id])
+  sessionId  String?
+  method     VerificationMethod
+  status     VerificationStatus
+  score      Int
+  at         DateTime           @default(now())
+}
+
+model AuditLog {
+  id       String   @id @default(cuid())
+  actor    String
+  role     Role
+  action   String
+  target   String
+  outcome  String
+  ip       String
+  hash     String?
+  prevHash String?
+  at       DateTime @default(now())
+
+  @@index([at])
+  @@index([actor])
+}
+
+model SecurityPolicy {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  label     String
+  category  String
+  enabled   Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}

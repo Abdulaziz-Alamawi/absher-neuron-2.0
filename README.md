@@ -6,6 +6,10 @@
 
 **Protecting digital identities _before_ attacks happen.**
 
+### 🌐 [**Live Demo → absher-neuron.vercel.app**](https://absher-neuron.vercel.app)
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-absher--neuron.vercel.app-1ee0c5?style=for-the-badge&logo=vercel)](https://absher-neuron.vercel.app)
+
 [![CI](https://img.shields.io/badge/CI-passing-1ee0c5)](./.github/workflows/ci.yml)
 [![Next.js](https://img.shields.io/badge/Next.js-15-000000)](https://nextjs.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688)](https://fastapi.tiangolo.com)
@@ -13,6 +17,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-1ee08a)](./LICENSE)
 
 **Owner & Author:** Abdulaziz AlAmawi
+
+> **Try it now:** open the live demo and sign in with `abdulaziz@absher.sa` / `neuron2026` (Super Admin) or `analyst@absher.sa` / `neuron2026` (Analyst). No setup required — the platform runs fully on deterministic generators and in-browser simulation when no database is connected.
 
 </div>
 

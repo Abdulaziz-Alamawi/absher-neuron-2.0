@@ -1,12 +1,12 @@
 <div align="center">
 
-# 🛡️ Absher Neuron 2.0
+# Absher Neuron 2.0
 
 ### AI Security Intelligence Platform · National Digital Identity & Predictive Defense
 
 **Protecting digital identities _before_ attacks happen.**
 
-### 🌐 [**Live Demo → absher-neuron.vercel.app**](https://absher-neuron.vercel.app)
+### [**Live Demo → absher-neuron.vercel.app**](https://absher-neuron.vercel.app)
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-absher--neuron.vercel.app-1ee0c5?style=for-the-badge&logo=vercel)](https://absher-neuron.vercel.app)
 
@@ -34,23 +34,23 @@ It pairs a **real machine-learning threat engine** (Isolation Forest + Random Fo
 
 ---
 
-## ✨ Capability Pillars
+## Capability Pillars
 
 | Pillar | What it does |
 | --- | --- |
-| 🧠 **Behavioral Identity Engine** | Continuous, passive biometric authentication from typing rhythm, mouse dynamics, device & browser fingerprints. Produces a **Trust / Risk / Confidence** score. |
-| 🎯 **Predictive Threat Engine** | Isolation Forest anomaly detection + Random Forest classification + gradient boosting across 7 threat classes. ~97% accuracy on the synthetic corpus. |
-| 🔐 **Triple Verification System** | Risk-based adaptive MFA: OTP → Face → Live-Camera Liveness → Voiceprint → Automated Phone Callback. Higher risk = stronger proofs. |
-| 🌍 **National Command Center** | Live global threat map, KPIs, severity mix, risk heatmaps and a real-time threat stream. |
-| 📡 **Real-Time System** | Native **WebSocket** gateway (FastAPI) streaming model-scored events, with SSE + in-browser simulation fallback. No manual refresh. |
-| 📈 **Security Analytics** | Threat trends, login analytics, risk distributions, model performance and 14-day attack forecasting. |
-| 🚨 **Alert & Incident Response** | AI-explained alerts, recommended playbooks, incident timelines and automated containment (SOAR). |
-| 🪪 **Identity Management** | Identity profiles, trusted devices, trusted locations, verification & login history. |
-| 🏛️ **Enterprise Governance** | RBAC matrix, tamper-evident audit logs, session management, security policies and a compliance dashboard (NCA ECC, PDPL, ISO 27001, NIST CSF, SOC 2, GDPR). |
+| **Behavioral Identity Engine** | Continuous, passive biometric authentication from typing rhythm, mouse dynamics, device & browser fingerprints. Produces a **Trust / Risk / Confidence** score. |
+| **Predictive Threat Engine** | Isolation Forest anomaly detection + Random Forest classification + gradient boosting across 7 threat classes. ~97% accuracy on the synthetic corpus. |
+| **Triple Verification System** | Risk-based adaptive MFA: OTP → Face → Live-Camera Liveness → Voiceprint → Automated Phone Callback. Higher risk = stronger proofs. |
+| **National Command Center** | Live global threat map, KPIs, severity mix, risk heatmaps and a real-time threat stream. |
+| **Real-Time System** | Native **WebSocket** gateway (FastAPI) streaming model-scored events, with SSE + in-browser simulation fallback. No manual refresh. |
+| **Security Analytics** | Threat trends, login analytics, risk distributions, model performance and 14-day attack forecasting. |
+| **Alert & Incident Response** | AI-explained alerts, recommended playbooks, incident timelines and automated containment (SOAR). |
+| **Identity Management** | Identity profiles, trusted devices, trusted locations, verification & login history. |
+| **Enterprise Governance** | RBAC matrix, tamper-evident audit logs, session management, security policies and a compliance dashboard (NCA ECC, PDPL, ISO 27001, NIST CSF, SOC 2, GDPR). |
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```
 ┌──────────────────────────────────────────────────────────────────┐
@@ -84,7 +84,7 @@ It pairs a **real machine-learning threat engine** (Isolation Forest + Random Fo
 
 ---
 
-## 🚀 Quickstart
+## Quickstart
 
 ### Option A — Run everything with Docker
 
@@ -125,7 +125,7 @@ npx prisma db seed
 
 ---
 
-## 🧠 The AI, in detail
+## The AI, in detail
 
 The predictive engine (`ai-engine/`) is trained on a labeled synthetic corpus of genuine vs. malicious authentication sessions across 7 classes: `benign, account_takeover, credential_theft, bot_activity, location_anomaly, device_anomaly, brute_force`.
 
@@ -144,7 +144,7 @@ curl -X POST http://localhost:8000/assess -H "Content-Type: application/json" \
 
 ---
 
-## 📂 Repository layout
+## Repository layout
 
 ```
 absher-neuron-2.0/
@@ -161,7 +161,7 @@ absher-neuron-2.0/
 
 ---
 
-## 🔒 Security & privacy
+## Security & privacy
 
 - Behavioral capture is **local-first** — only derived feature vectors are scored, never raw keystrokes.
 - Camera/microphone are requested **only** for explicit liveness/voice verification.
@@ -170,7 +170,7 @@ absher-neuron-2.0/
 
 ---
 
-## 📜 License
+## License
 
 [MIT](./LICENSE) © 2026 **Abdulaziz AlAmawi**
 
